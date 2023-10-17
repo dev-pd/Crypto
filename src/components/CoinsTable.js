@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
 
 export function numberWithCommas(x) {
-  if (x === null || x === undefined || typeof x !== "number") {
+  if (x === null || x === undefined) {
     console.warn("numberWithCommas was called with a non-number value:", x);
     return "";
   }
