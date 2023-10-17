@@ -7,7 +7,7 @@ import { CryptoState } from "../../CryptoContext";
 import AliceCarousel from "react-alice-carousel";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   carousel: {
     height: "50%",
     display: "flex",
