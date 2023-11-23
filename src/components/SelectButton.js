@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     color: props.selected ? "black" : "",
     fontWeight: props.selected ? 700 : 500,
     "&:hover": {
-      backgroundColor: "yellow",
+      backgroundColor: "white",
       color: "black",
     },
     width: "22%",
