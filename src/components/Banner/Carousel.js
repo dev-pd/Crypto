@@ -37,7 +37,7 @@ export default function Carousel() {
     setTrending(data);
   };
 
-  console.log(trending);
+  //console.log(trending);
   useEffect(() => {
     fetchTrendingCoins();
   }, [currency]);

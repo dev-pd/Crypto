@@ -70,10 +70,10 @@ export default function CoinsTable() {
     setLoading(true);
     try {
       const { data } = await axios.get(CoinList(currency));
-      console.log("The list of cryptos: ", data);
+      //console.log("The list of cryptos: ", data);
       setCoins(data);
     } catch (error) {
-      console.error("Error fetching coins:", error);
+      //console.error("Error fetching coins:", error);
     } finally {
       setLoading(false);
     }

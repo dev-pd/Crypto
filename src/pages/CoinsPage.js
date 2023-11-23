@@ -82,10 +82,10 @@ export default function CoinsPage() {
     const { data } = await axios.get(SingleCoin(id));
     setCoin(data);
   };
-  console.log("this is the data: ", coin);
+  //console.log("this is the data: ", coin);
   useEffect(() => {
     fetchCoin();
-  }, []);
+  }, [currency]);
 
   if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
 
