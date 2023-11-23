@@ -123,7 +123,7 @@ export default function AuthModal() {
             <Box className={classes.google}>
               <span>OR</span>
               <GoogleButton
-                style={{ width: "100%", outline: "none", borderRadius: 15 }}
+                style={{ width: "100%", outline: "none" }}
                 onClick={signInWithGoogle}
               />
             </Box>
