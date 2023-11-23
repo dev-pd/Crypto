@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import CoinsPage from "./pages/CoinsPage";
 import HomePage from "./pages/HomePage";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "./components/Alert";
 
 const useStyles = makeStyles(() => ({
   App: {
@@ -32,6 +33,7 @@ export default function App() {
           />
         </Routes>
       </div>
+      <Alert />
     </BrowserRouter>
   );
 }

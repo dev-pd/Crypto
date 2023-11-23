@@ -11,6 +11,11 @@ export default function CryptoContext({ children }) {
   const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState(null);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    type: "success",
+  });
 
   const fetchCoins = async () => {
     setLoading(true);
@@ -32,7 +37,16 @@ export default function CryptoContext({ children }) {
 
   return (
     <Crypto.Provider
-      value={{ currency, symbol, setCurrency, coins, loading, fetchCoins }}>
+      value={{
+        currency,
+        symbol,
+        setCurrency,
+        coins,
+        loading,
+        fetchCoins,
+        alert,
+        setAlert,
+      }}>
       {children}
     </Crypto.Provider>
   );
