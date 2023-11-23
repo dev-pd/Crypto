@@ -83,7 +83,6 @@ export default function CoinsPage() {
     const { data } = await axios.get(SingleCoin(id));
     setCoin(data);
   };
-  //console.log("this is the data: ", coin);
   useEffect(() => {
     fetchCoin();
   }, [currency]);

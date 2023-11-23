@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Pagination from "@material-ui/lab/Pagination";
@@ -16,8 +17,7 @@ import {
   Table,
   Paper,
 } from "@material-ui/core";
-import axios from "axios";
-import { CoinList } from "../config/api";
+
 import { useNavigate } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
 
@@ -47,12 +47,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function CoinsTable() {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, coins, loading, fetchCoins } = CryptoState();
 
   const classes = useStyles();
   const navigate = useNavigate();
@@ -65,19 +63,6 @@ export default function CoinsTable() {
       type: "dark",
     },
   });
-
-  const fetchCoins = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(CoinList(currency));
-      //console.log("The list of cryptos: ", data);
-      setCoins(data);
-    } catch (error) {
-      //console.error("Error fetching coins:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchCoins();

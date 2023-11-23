@@ -1,10 +1,27 @@
 import { React, useState, useContext, useEffect, createContext } from "react";
+import axios from "axios";
+import { CoinList } from "./config/api";
 
 const Crypto = createContext();
 
 export default function CryptoContext({ children }) {
   const [currency, setCurrency] = useState("USD");
   const [symbol, setSymbol] = useState("$");
+  const [coins, setCoins] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCoins = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(CoinList(currency));
+      //console.log("The list of cryptos: ", data);
+      setCoins(data);
+    } catch (error) {
+      //console.error("Error fetching coins:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (currency === "USD") setSymbol("$");
@@ -12,7 +29,8 @@ export default function CryptoContext({ children }) {
   }, [currency]);
 
   return (
-    <Crypto.Provider value={{ currency, symbol, setCurrency }}>
+    <Crypto.Provider
+      value={{ currency, symbol, setCurrency, coins, loading, fetchCoins }}>
       {children}
     </Crypto.Provider>
   );
