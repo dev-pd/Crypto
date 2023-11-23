@@ -10,7 +10,30 @@ import {
   createTheme,
   makeStyles,
 } from "@material-ui/core";
+import { SelectButton } from "./SelectButton";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
+import { chartDays } from "../config/data";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -92,7 +115,7 @@ export const CoinInfo = ({ coin }) => {
                   {
                     data: historicalData.map((coin) => coin[1]),
                     label: `Price ( Past ${days} ) in ${currency}`,
-                    borderColor: "EEBC1D",
+                    borderColor: "#EEBC1D",
                   },
                 ],
               }}
@@ -104,10 +127,26 @@ export const CoinInfo = ({ coin }) => {
                 },
               }}
             />
+
+            {/* buttons */}
+            <div
+              style={{
+                display: "flex",
+                marginTop: 20,
+                justifyContent: "space-around",
+                width: "100%",
+              }}>
+              {chartDays.map((day) => (
+                <SelectButton
+                  key={day.value}
+                  onClick={() => setDays(day.value)}
+                  selected={day.value === days}>
+                  {day.label}
+                </SelectButton>
+              ))}
+            </div>
           </>
         )}
-
-        {/* buttons */}
       </div>
     </ThemeProvider>
   );
