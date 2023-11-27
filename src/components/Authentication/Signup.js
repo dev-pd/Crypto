@@ -28,7 +28,7 @@ export default function Signup(handleClose) {
         password
       );
 
-      console.log(result);
+      //console.log(result);
 
       setAlert({
         open: "true",
@@ -74,7 +74,7 @@ export default function Signup(handleClose) {
         fullWidth
       />
       <Button
-        variant="containeed"
+        variant="contained"
         size="large"
         style={{ backgroundColor: "#EEBC1D" }}
         onClick={handleSubmit}>

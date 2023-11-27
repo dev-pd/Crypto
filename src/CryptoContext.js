@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { React, useState, useContext, useEffect, createContext } from "react";
 import axios from "axios";
 import { CoinList } from "./config/api";
-
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 const Crypto = createContext();
 
 export default function CryptoContext({ children }) {
@@ -11,6 +13,7 @@ export default function CryptoContext({ children }) {
   const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState(null);
+
   const [alert, setAlert] = useState({
     open: false,
     message: "",
@@ -35,6 +38,16 @@ export default function CryptoContext({ children }) {
     else if (currency === "INR") setSymbol("₹");
   }, [currency]);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
+
   return (
     <Crypto.Provider
       value={{
@@ -46,6 +59,7 @@ export default function CryptoContext({ children }) {
         fetchCoins,
         alert,
         setAlert,
+        user,
       }}>
       {children}
     </Crypto.Provider>
