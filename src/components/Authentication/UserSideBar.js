@@ -2,6 +2,8 @@
 import React from "react";
 import { Drawer, Button, makeStyles, Avatar } from "@material-ui/core";
 import { CryptoState } from "../../CryptoContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 const useStyles = makeStyles({
   container: {
@@ -48,15 +50,13 @@ const useStyles = makeStyles({
   },
 });
 
-const logOut = () => {};
-
 export default function UserSideBar() {
   const classes = useStyles();
   const [state, setState] = React.useState({
     right: false,
   });
 
-  const { user } = CryptoState();
+  const { user, setAlert } = CryptoState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -67,6 +67,18 @@ export default function UserSideBar() {
     }
 
     setState({ ...state, [anchor]: open });
+  };
+
+  const logOut = () => {
+    signOut(auth);
+
+    setAlert({
+      open: true,
+      type: "success",
+      message: "Logout Successful",
+    });
+
+    toggleDrawer();
   };
 
   return (
