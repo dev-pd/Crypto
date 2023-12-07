@@ -22,7 +22,7 @@ export default function CryptoContext({ children }) {
 
   useEffect(() => {
     if (user) {
-      const coinRef = doc(db, "watchlist", user.id);
+      const coinRef = doc(db, "watchlist", user?.uid);
 
       var unsubscribe = onSnapshot(coinRef, (coin) => {
         if (coin?.exists()) {
