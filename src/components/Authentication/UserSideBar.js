@@ -56,7 +56,7 @@ export default function UserSideBar() {
     right: false,
   });
 
-  const { user, setAlert } = CryptoState();
+  const { user, setAlert, watchlist } = CryptoState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -122,7 +122,11 @@ export default function UserSideBar() {
 
                 <div className={classes.watchlist}>
                   <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
-                    watchlist
+                    {watchlist.map((item, index) => (
+                      <div key={index}>
+                        Coin {index} : {item}
+                      </div>
+                    ))}
                   </span>
                 </div>
                 <Button
