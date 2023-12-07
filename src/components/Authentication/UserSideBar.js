@@ -1,9 +1,22 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Drawer, Button, makeStyles, Avatar } from "@material-ui/core";
 import { CryptoState } from "../../CryptoContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase";
+import DeleteIcon from "@material-ui/icons/Delete";
+
+export function numberWithCommas(x) {
+  if (x === null || x === undefined) {
+    console.warn("numberWithCommas was called with a non-number value:", x);
+    return "";
+  }
+
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 const useStyles = makeStyles({
   container: {
@@ -48,6 +61,17 @@ const useStyles = makeStyles({
     gap: 12,
     overflowY: "scroll",
   },
+  coin: {
+    padding: 10,
+    borderRadius: 5,
+    color: "black",
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#EEBC1D",
+    boxShadow: "0 0 3px black",
+  },
 });
 
 export default function UserSideBar() {
@@ -56,7 +80,7 @@ export default function UserSideBar() {
     right: false,
   });
 
-  const { user, setAlert, watchlist } = CryptoState();
+  const { coins, user, setAlert, watchlist, symbol } = CryptoState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -79,6 +103,31 @@ export default function UserSideBar() {
     });
 
     toggleDrawer();
+  };
+
+  const removeFromWatchlist = async (coin) => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      await setDoc(
+        coinRef,
+        {
+          coins: watchlist.filter((watch) => watch !== coin?.id),
+        },
+        { merge: "true" }
+      );
+      setAlert({
+        open: true,
+        message: `${coin.name} removed from watchlist`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -122,12 +171,31 @@ export default function UserSideBar() {
 
                 <div className={classes.watchlist}>
                   <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
-                    {watchlist.map((item, index) => (
-                      <div key={index}>
-                        Coin {index} : {item}
-                      </div>
-                    ))}
+                    watchlist
                   </span>
+
+                  {coins.map((coin) => {
+                    if (watchlist.includes(coin.id)) {
+                      return (
+                        <div className={classes.coin}>
+                          <span>{coin.name}</span>
+                          <span style={{ display: "flex" }}>
+                            {symbol}{" "}
+                            {numberWithCommas(coin.current_price.toFixed(2))}
+                            {"  "}
+                            <DeleteIcon
+                              onClick={() => removeFromWatchlist(coin)}
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "16px",
+                                marginLeft: "10px",
+                              }}
+                            />
+                          </span>
+                        </div>
+                      );
+                    }
+                  })}
                 </div>
                 <Button
                   variant="contained"
