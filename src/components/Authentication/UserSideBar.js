@@ -182,7 +182,6 @@ export default function UserSideBar() {
                           <span style={{ display: "flex" }}>
                             {symbol}{" "}
                             {numberWithCommas(coin.current_price.toFixed(2))}
-                            {"  "}
                             <DeleteIcon
                               onClick={() => removeFromWatchlist(coin)}
                               style={{
