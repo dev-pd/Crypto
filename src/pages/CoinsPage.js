@@ -4,9 +4,16 @@ import { useParams } from "react-router-dom";
 import { CryptoState } from "../CryptoContext";
 import axios from "axios";
 import { SingleCoin } from "../config/api";
-import { LinearProgress, Typography, makeStyles } from "@material-ui/core";
+import {
+  LinearProgress,
+  Typography,
+  makeStyles,
+  Button,
+} from "@material-ui/core";
 import { CoinInfo } from "../components/CoinInfo";
 import ReactHtmlParser from "react-html-parser";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -48,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
 
     [theme.breakpoints.down("md")]: {
       display: "flex",
-      justifyContent: "space-around",
+      flexDirection: "column",
+      alignItems: "center",
     },
 
     [theme.breakpoints.down("sm")]: {
@@ -75,7 +83,7 @@ export default function CoinsPage() {
   const { id } = useParams();
 
   const [coin, setCoin] = useState();
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user, watchlist, setAlert } = CryptoState();
 
   const classes = useStyles();
 
@@ -86,6 +94,28 @@ export default function CoinsPage() {
   useEffect(() => {
     fetchCoin();
   }, [currency]);
+
+  const inWatchlist = watchlist.includes(coin?.id);
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      await setDoc(coinRef, {
+        coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+      });
+      setAlert({
+        open: true,
+        message: `${coin.name} added to watchlist`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
 
   if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
 
@@ -160,6 +190,18 @@ export default function CoinsPage() {
               Million
             </Typography>
           </span>
+          {user && (
+            <Button
+              variant="outlined"
+              style={{
+                width: "100%",
+                height: 40,
+                backgroundColor: inWatchlist ? "#ff0000" : "#EEBC1D",
+              }}
+              onClick={addToWatchlist}>
+              {inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+            </Button>
+          )}
         </div>
       </div>
 

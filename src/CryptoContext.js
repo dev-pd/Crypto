@@ -2,8 +2,9 @@
 import { React, useState, useContext, useEffect, createContext } from "react";
 import axios from "axios";
 import { CoinList } from "./config/api";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
 const Crypto = createContext();
 
 export default function CryptoContext({ children }) {
@@ -11,23 +12,37 @@ export default function CryptoContext({ children }) {
   const [symbol, setSymbol] = useState("$");
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [user, setUser] = useState(null);
-
   const [alert, setAlert] = useState({
     open: false,
     message: "",
     type: "success",
   });
+  const [watchlist, setWatchlist] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      const coinRef = doc(db, "watchlist", user.id);
+
+      var unsubscribe = onSnapshot(coinRef, (coin) => {
+        if (coin?.exists()) {
+          setWatchlist(coin.data().coins);
+        } else {
+          console.log("No items in watchlist");
+        }
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
 
   const fetchCoins = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(CoinList(currency));
-      //console.log("The list of cryptos: ", data);
       setCoins(data);
     } catch (error) {
-      //console.error("Error fetching coins:", error);
     } finally {
       setLoading(false);
     }
@@ -60,6 +75,7 @@ export default function CryptoContext({ children }) {
         alert,
         setAlert,
         user,
+        watchlist,
       }}>
       {children}
     </Crypto.Provider>
