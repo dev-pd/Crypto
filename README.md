@@ -39,7 +39,7 @@ Get the project up and running on your local machine in just a few steps:
 Clone the project
 
 ```bash
-  git clone https://github.com/deshpandeprasad/Crypto.git
+  git clone https://github.com/dev-pd/Crypto.git
 ```
 
 Go to the project directory
