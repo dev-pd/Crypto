@@ -1,4 +1,4 @@
-# Crypto Hunter
+# Crypto Hunter -- Live Demo: [https://prasad-crypto.netlify.app/](https://prasad-crypto.netlify.app/)
 
 1. The User can see the details of all the cryptocurrencies
 2. The User can click on a particular coin and see more details such as the historical chart of price
