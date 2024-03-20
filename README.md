@@ -14,7 +14,7 @@
 
 ## Tech Stack
 
-React, MaterialUI, Chart.js, Firebase
+React, Redux, MaterialUI, Chart.js, Firebase
 
 ## Run Locally
 
