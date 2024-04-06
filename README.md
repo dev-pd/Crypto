@@ -1,4 +1,4 @@
-# Crypto Hunter -- Live Demo: [https://prasad-crypto.netlify.app/](https://prasad-crypto.netlify.app/)
+# Crypto Hunter -- Live Demo: [https://ojasviprasad-crypto.netlify.app/](https://prasad-crypto.netlify.app/)
 
 Welcome to Crypto Hunter, the definitive cryptocurrency tracking application that provides real-time and historical data on all major cryptocurrencies.
 This intuitive and user-friendly platform allows enthusiasts and investors alike to stay up-to-date with their favorite digital currencies.
