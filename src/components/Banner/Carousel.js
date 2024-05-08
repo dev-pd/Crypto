@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, CircularProgress } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { TrendingCoins } from "../../config/api";
@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
     height: "50%",
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
   },
   carouselItem: {
     display: "flex",
@@ -31,10 +32,13 @@ export default function Carousel() {
   const [trending, setTrending] = useState([]);
   const classes = useStyles();
   const { currency, symbol } = CryptoState();
+  const [loading, setLoading] = useState(false);
+  const { error, setError } = useState("");
 
   const fetchTrendingCoins = async () => {
+    setLoading(true);
+    setError("");
     const { data } = await axios.get(TrendingCoins(currency));
-
     setTrending(data);
   };
 
@@ -84,17 +88,29 @@ export default function Carousel() {
 
   return (
     <div className={classes.carousel}>
-      <AliceCarousel
-        mouseTracking
-        infinite
-        autoPlayInterval={1000}
-        animationDuration={1500}
-        disableDotsControls
-        disableButtonsControls
-        responsive={responsive}
-        autoPlay
-        items={items}
-      />
+      {loading ? (
+        <CircularProgress
+          style={{ color: "gold" }}
+          size={50}
+        />
+      ) : error ? (
+        <CircularProgress
+          style={{ color: "gold" }}
+          size={50}
+        />
+      ) : (
+        <AliceCarousel
+          mouseTracking
+          infinite
+          autoPlayInterval={1000}
+          animationDuration={1500}
+          disableDotsControls
+          disableButtonsControls
+          responsive={responsive}
+          autoPlay
+          items={items}
+        />
+      )}
     </div>
   );
 }
